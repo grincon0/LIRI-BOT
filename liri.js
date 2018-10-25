@@ -2,6 +2,7 @@ require("dotenv").config();
 const Spotify = require('node-spotify-api');
 const axios = require('axios');
 const fs = require('fs');
+const moment = require('moment');
 
 
 let key = require("./keys.js");
@@ -19,6 +20,12 @@ const log = (data) => {
             
         });
         
+}
+
+const doFromTxt = () => {
+    fs.readFile("random.txt", "utf8", function(error, data){
+        getSongInfo(data);
+    })
 }
 
 const getSongInfo = (name) => {
