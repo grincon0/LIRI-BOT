@@ -53,7 +53,7 @@ const getMovieInfo = (name) => {
     }
     axios.get(`http://www.omdbapi.com/?t=${name}&plot=short&apikey=trilogy`)
         .then(function (response) {
-            console.log(`${response.data.Title}\n${response.data.Year}\n${response.data.Rated}\n${response.data.Country}\n${response.data.Language}\n${response.data.Plot}\n${response.data.Actors}\n${response.data.Ratings[1].Value}\n${response.data.imdbRating}\n`);
+            console.log(`Title: ${response.data.Title}\n Year: ${response.data.Year}\nRated: ${response.data.Rated}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\nRotten Tomatoes: ${response.data.Ratings[1].Value}\n Imdb Rating:${response.data.imdbRating}\n`);
         })
         .catch(function (error) {
             console.log(error);
