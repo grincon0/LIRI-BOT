@@ -1,13 +1,19 @@
+//executes env config
 require("dotenv").config();
+
+//inits packages
 const Spotify = require('node-spotify-api');
 const axios = require('axios');
 const fs = require('fs');
 const moment = require('moment');
 
-
+//imports API key directed from key.js and
 let key = require("./keys.js");
+
+//get arguments that will be used by the app to recieve data through the APIs
 let userInput1 = process.argv[2];
 let userInput2 = process.argv[3];
+
 
 const log = (data) => {
     
@@ -35,13 +41,16 @@ const getSongInfo = (name) => {
             return console.log('Error occurred: ' + err);
         }
 
-        console.log(` Song Name : ${name.toUpperCase()}\n Album : ${data.tracks.items[0].album.name}\n Artist : ${data.tracks.items[0].album.artists[0].name}
-        URL : ${data.tracks.items[0].album.external_urls.spotify}`);
+        console.log(`Song Name : ${name.toUpperCase()}\nAlbum : ${data.tracks.items[0].album.name}\nArtist : ${data.tracks.items[0].album.artists[0].name}\nURL : ${data.tracks.items[0].album.external_urls.spotify}`);
     });
 }
 
 
 const getMovieInfo = (name) => {
+
+    if(!name){
+        name = "Mr.Nobody";
+    }
     axios.get(`http://www.omdbapi.com/?t=${name}&plot=short&apikey=trilogy`)
         .then(function (response) {
             console.log(`${response.data.Title}\n${response.data.Year}\n${response.data.Rated}\n${response.data.Country}\n${response.data.Language}\n${response.data.Plot}\n${response.data.Actors}\n${response.data.Ratings[1].Value}\n${response.data.imdbRating}\n`);
@@ -51,16 +60,24 @@ const getMovieInfo = (name) => {
         });
 }
 
-const getBandInfo = (name) => {
+const getConcertInfo = (name) => {
     axios.get(`https://rest.bandsintown.com/artists/${name}/events?app_id=codingbootcamp`)
         .then(function (response) {
-            console.log(response)
+            if(!response.data.length){
+                console.log(`No upcoming concerts for ${name}`);
+            }else{
+                let source = response.data;
+                for(let i =0; i < source.length; i++){
+                    console.log(`\nLocation : ${source[i].venue.city},${source[i].venue.country}\nVenue : ${source[i].venue.name}\nDate : ${moment(source[i].datetime).format("MM/DD/YYYY")} \n`);
+                }
+            }
         }).catch(function (error) {
             console.log(error);
         });
 }
 
 
+//initializes on execution
 
 switch (userInput1) {
     case 'spotify-this-song':
@@ -70,7 +87,10 @@ switch (userInput1) {
         getMovieInfo(userInput2);
         break;
     case 'concert-this':
-        getBandInfo(userInput2);
+        getConcertInfo(userInput2);
+        break;
+    case 'do-what-it-says':
+        doFromTxt();
         break;
     default:
         break;
