@@ -4,6 +4,8 @@
 
 ## Installation
 
+Before running the program, you need to install all of its dependencies by running the following line in your terminal.
+
 ````
     npm install
 
@@ -11,7 +13,7 @@
 
 ## Instructions
 
-### Use the following syntax to receive a response.
+### Use the following syntax to receive your desired response.
 
 #### Do you want to look for a song?
 
